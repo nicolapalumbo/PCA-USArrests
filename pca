@@ -1,0 +1,99 @@
+PCA. Use: 
+> data (USArrests)
+> USArrests
+
+>n= nrow (USArrests)
+> n
+[1] 50
+> p= ncol (USArrests)
+> p
+[1] 4
+
+> medie= colMeans (USArrests)
+> medie
+  Murder  Assault UrbanPop     Rape 
+   7.788  170.760   65.540   21.232 
+
+> sd= sapply(USArrests,sd)
+> sd
+   Murder   Assault  UrbanPop      Rape 
+ 4.355510 83.337661 14.474763  9.366385 
+ 
+ #create a matrix correlation of data 
+ 
+> matrixcorrelation= cor (USArrests)
+> matrixcorrelation
+
+#calculate eigenvalues and eigenvectors
+
+> AR= eigen (matrixcorrelation)
+> AR
+eigen() decomposition
+$values
+[1] 2.4802416 0.9897652 0.3565632 0.1734301
+
+$vectors
+           [,1]       [,2]       [,3]        [,4]
+[1,] -0.5358995  0.4181809 -0.3412327  0.64922780
+[2,] -0.5831836  0.1879856 -0.2681484 -0.74340748
+[3,] -0.2781909 -0.8728062 -0.3780158  0.13387773
+[4,] -0.5434321 -0.1673186  0.8177779  0.08902432
+
+> autoval= AR$values
+> autoval
+[1] 2.4802416 0.9897652 0.3565632 0.1734301
+
+#rename with $
+
+> autoval= AR$values
+> autoval
+[1] 2.4802416 0.9897652 0.3565632 0.1734301
+> autovec=AR$vector
+> autovec
+           [,1]       [,2]       [,3]        [,4]
+[1,] -0.5358995  0.4181809 -0.3412327  0.64922780
+[2,] -0.5831836  0.1879856 -0.2681484 -0.74340748
+[3,] -0.2781909 -0.8728062 -0.3780158  0.13387773
+[4,] -0.5434321 -0.1673186  0.8177779  0.08902432
+
+#calculate explained variance (pvarsp) and cumulate (pvarspcum)
+> pvarsp= autoval/p
+> pvarsp
+[1] 0.62006039 0.24744129 0.08914080 0.04335752
+
+> pvarspcum= cumsum(pvarsp)
+> pvarspcum
+[1] 0.6200604 0.8675017 0.9566425 1.0000000
+
+#plot autovalues
+
+> plot (autoval, type="b", main="Plot", xlab="nr components", ylab= "Autoval") +
++ abline (h=1, lwd=4,col ="red")
+
+# pca (scale parameter is TRUE default)
+
+> pca= prcomp (USArrests, scale= T)
+> pca
+Standard deviations (1, .., p=4):
+[1] 1.5748783 0.9948694 0.5971291 0.4164494
+
+Rotation (n x k) = (4 x 4):
+                PC1        PC2        PC3         PC4
+Murder   -0.5358995  0.4181809 -0.3412327  0.64922780
+Assault  -0.5831836  0.1879856 -0.2681484 -0.74340748
+UrbanPop -0.2781909 -0.8728062 -0.3780158  0.13387773
+Rape     -0.5434321 -0.1673186  0.8177779  0.08902432
+
+> summary (pca)
+Importance of components:
+                          PC1    PC2     PC3     PC4
+Standard deviation     1.5749 0.9949 0.59713 0.41645
+Proportion of Variance 0.6201 0.2474 0.08914 0.04336
+Cumulative Proportion  0.6201 0.8675 0.95664 1.00000
+
+> plot (pca)
+> biplot (pca)
+
+ 
+
+
